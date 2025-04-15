@@ -1,18 +1,26 @@
-#Programa recursivo para calcular factorial en lenguaje C
-
 #include <stdio.h>
+#include <gmp.h>
 
-long long factorial(int n) {
-    if (n <= 1)
-        return 1;
-    else
-        return n * factorial(n - 1);
+void factorial(mpz_t result, unsigned int n) {
+    mpz_set_ui(result, 1);
+    for (unsigned int i = 2; i <= n; i++) {
+        mpz_mul_ui(result, result, i);
+    }
 }
 
 int main() {
-    int num;
+    unsigned int num;
     printf("Introduce un número: ");
-    scanf("%d", &num);
-    printf("Factorial de %d es %lld\n", num, factorial(num));
+    scanf("%u", &num);
+
+    mpz_t result;
+    mpz_init(result);
+
+    factorial(result, num);
+
+    gmp_printf("Factorial de %u es %Zd\n", num, result);
+
+    mpz_clear(result);
     return 0;
 }
+
